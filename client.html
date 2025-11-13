@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Socket.IO Client Test</title>
+</head>
+<body>
+  <h2>🔔 Notifikasi</h2>
+  <ul id="list"></ul>
+
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <script>
+    const socket = io("http://localhost:9009");
+    const userId = 1; // ganti sesuai user ID
+    const list = document.getElementById("list");
+
+    socket.on("connect", () => {
+      console.log("🟢 Connected:", socket.id);
+      socket.emit("register", userId);
+    });
+
+    socket.on("notification", (data) => {
+      console.log("📨 Notification received:", data);
+      const li = document.createElement("li");
+      li.textContent = `${data.title} — ${data.message}`;
+      list.prepend(li);
+    });
+  </script>
+</body>
+</html>
